@@ -8,7 +8,7 @@ component
 	-obstacles
 	    -movingSquare
 		-crushSquares # incomplete
-		-columns/player # incomplete 
+		-columns
 		-spinningPin # incomplete
 	-enemy
 		-missile # incomplete
