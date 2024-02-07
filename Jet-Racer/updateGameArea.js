@@ -8,8 +8,8 @@ function updateGameArea(){
     let backgroundSpeed = -1.5;
 
     let x, height, gap, minHeight, maxHeight, minGap, maxGap;
-    for(let i = 0; i < Obstacle.length; i++){
-        if(Player.crashWith(Obstacle[i])){
+    for(let i = 0; i < Column.length; i++){
+        if(Player.crashWith(Column[i])){
             gameArea.stop();
             return;
         }
@@ -27,12 +27,13 @@ function updateGameArea(){
         minGap = 50;
         maxGap = 200;
         gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
-        Obstacle.push(new component(10, height, "green", x, 0));
-        Obstacle.push(new component(10, x - height - gap, "green", x, height + gap));
+        // edit obstacle is now column
+        Column.push(new column(x, 0, 10, height,"green"));
+        Column.push(new column(x, height + gap, 10, x - height - gap, "green"));
     }
-    for(let i = 0; i < Obstacle.length; i++){
-        Obstacle[i].x += obstacleSpeed;
-        Obstacle[i].update();
+    for(let i = 0; i < Column.length; i++){
+        Column[i].x += obstacleSpeed;
+        Column[i].update();
     }
 
     let scoreNum = Math.floor(gameArea.frameNumber / 10)
