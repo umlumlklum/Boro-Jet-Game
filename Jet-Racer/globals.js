@@ -1,5 +1,5 @@
 var Player;
-var Obstacle = [];
+var Column = []; 
 var Score;
 var Background;
 
