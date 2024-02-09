@@ -7,6 +7,10 @@ document.addEventListener("keydown", (event) =>{
         case "s":
             Player.speedY = 1;
             break;
+        case "Escape":
+            let item = new PauseMenu();
+            item.OpenPauseMenu();
+            break;
         default:
             break;
     }
