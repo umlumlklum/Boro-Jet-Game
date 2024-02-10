@@ -1,7 +1,7 @@
-var Player;
-var Column = []; 
-var Score;
-var Background;
+var player;
+var obstacles = []; 
+var score;
+var background;
 
 //const canvasWidth = 450;
 const canvasWidth = window.innerWidth;

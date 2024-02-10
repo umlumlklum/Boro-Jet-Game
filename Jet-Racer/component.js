@@ -1,186 +1,166 @@
 /*
 ______Hierachy________
 component
-    -player
-	-text
-	-background
-	-image # maybe
-	-obstacles
-	    -movingSquare
-		-crushSquares # incomplete
-		-columns
-		-spinningPin # incomplete
-	-enemy
-		-missile # incomplete
-		-bug # incomplete
-		-turret # incomplete
-	-collectable
-		-barellRoll # incomplete
-		-healthPoint # incomplete
+	text
+	movable   < Has x and y speed >
+		background
+		obstacles
+			movingSquare
+			crushSquares # incomplete
+			columns
+			spinningPin # incomplete
+		collectable
+			barellRoll # incomplete
+			healthPoint # incomplete
+		living   < Has health and damage >
+			player
+			enemy
+				missile # incomplete
+				bug # incomplete
+				turret # incomplete
 ________________________
 */
-class component{
-	constructor(x, y){
+class Component{
+	constructor(id, x, y, width, height, color){
+		this.id = id;
         this.x = x;
         this.y = y;
-	}
-}
-
-class player extends component{
-	constructor(x,y,width,height,color){ 
-		super(x, y);
-		this.obj='player';
 		this.width = width;
 		this.height = height;
 		this.color = color;
-		this.speedX = 0;
-		this.speedY = 0;
-		
-        this.update = function(){
-            let ctx = gameArea.context;
-            ctx.fillStyle = color;
-            ctx.fillRect(this.x, this.y, this.width, this.height);  
-        }
-		
-		this.newPos = function(){
-			this.x += this.speedX;
-			this.y += this.speedY;
-		}
-		
-		this.crashWith = function(obj){
-			let left = this.x;
-			let right = this.x + this.width;
-			let top = this.y;
-			let bottom = this.y + this.height;
-			let otherLeft = obj.x;
-			let otherRight = obj.x + obj.width;
-			let otherTop = obj.y;
-			let otherBottom = obj.y + obj.height;
-			let crash = true;
-			if((bottom < otherTop) ||
-			   (top > otherBottom) ||
-			   (right < otherLeft) ||
-			   (left > otherRight)){
-				crash = false;
-			}
-			return crash;
-		}
+	}
+
+	update(){
+		let ctx = gameArea.context;
+		ctx.fillStyle = this.color;
+		ctx.fillRect(this.x, this.y, this.width, this.height);
 	}
 }
 
-class text extends component{
-	constructor(x,y,width,height,color,type){ 
-		super(x,y);
-		this.obj='text'
+class Text extends Component{
+	constructor(x, y, width, height, color, type){ 
+		super('text', x, y, width, height, color);
         this.type = type;
-		this.width = width;
-		this.height = height;
-		this.color = color;
-		this.speedX = 0;
-		this.speedY = 0;
-        this.update = function(){
-            let ctx = gameArea.context;
-            ctx.font = this.width + " " + this.height;
-            ctx.fillStyle = color;
-            ctx.fillText(this.text, this.x, this.y);
-            
-        }
+	}
+
+	update(){
+		super.update();
+
+		let ctx = gameArea.context;
+		ctx.font = this.width + " " + this.height;
 	}
 }
 
-class background  extends component{
-	constructor(x, y,width,height,color){
-		super(x, y);
-		this.obj='background';
+class MovableComponent extends Component{
+	constructor(id, x, y, width, height, speedX, speedY, color){
+		super(id, x, y, width, height, color);
+		this.speedX = speedX;
+		this.speedY = speedY;
+	}
+
+	move(){
+		this.x += this.speedX;
+		this.y += this.speedY;
+	}
+}
+
+class Background extends MovableComponent{
+	constructor(x, y, width, height, speedX, speedY, color){
+		super('background', x, y, width, height, speedX, speedY, color);
 		this.image = new Image();
 		this.image.src = color;
+	}
 
-		this.width = width;
-		this.height = height;
-		this.color = color;
-		this.speedX = 0;
-		this.speedY = 0;
-	
-		this.update = function(){
-			let ctx = gameArea.context;
-			ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
-			ctx.drawImage(this.image, this.x + this.width, this.y, this.width, this.height);
+	update(){
+		this.move();
+
+		let ctx = gameArea.context;
+		ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+		ctx.drawImage(this.image, this.x + this.width, this.y, this.width, this.height);
+	}
+}
+
+class Obstacle extends MovableComponent{
+	constructor(id, x, y, width, height, speedX, speedY, color){
+		super(id, x, y, width, height, speedX, speedY, color);
+	}
+}
+
+class Column extends Obstacle{
+	constructor(x, y, width, height, speedX, speedY, color){ 
+		super('column', x, y, width, height, speedX, speedY, color);
+	}
+
+	update(){
+		super.update();
+	}
+}
+
+class Collectable extends MovableComponent{
+	constructor(id, x, y, width, height, speedX, speedY, color){
+		super(id, x, y, width, height, speedX, speedY, color);
+	}
+}
+
+class LivingComponent extends MovableComponent{
+	constructor(id, x, y, width, height, speedX, speedY, maxHealth, damage, color){
+		super(id, x, y, width, height, speedX, speedY, color);
+		this.health = maxHealth;
+		this.maxHealth = maxHealth;
+		this.damage = damage;
+	}
+
+	heal(health){
+		this.health += health;
+
+		if (this.health > this.maxHealth){
+			this.health = this.maxHealth;
 		}
-		this.newPos = function(){
-			this.x += this.speedX;
-			this.y += this.speedY;
-			if(this.x == -(this.width)){
-				this.x = 0;
-			}
+	}
+
+	takeDamage(damage){
+		this.health -= damage;
+
+		if (this.health <= 0){
+			gameArea.stop(); // Death
 		}
 	}
 }
 
-class image  extends component{
-	constructor(x, y,width,height, color){
-		super(x, y);
-		this.obj='image';
-		this.image = new Image();
-		this.image.src = color;
+class Player extends LivingComponent{
+	constructor(x, y, width, height, speedX, speedY, maxHealth, damage, color){ 
+		super('player', x, y, width, height, speedX, speedY, maxHealth, damage, color);
+	}
 
-		this.width = width;
-		this.height = height;
-		this.speedX = 0;
-		this.speedY = 0;
-	
-		this.update = function(){
-			let ctx = gameArea.context;
-			ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+	update(){
+		this.move();
+		super.update();
+	}
+
+	isOverlapping(obj){
+		let left = this.x;
+		let right = this.x + this.width;
+		let top = this.y;
+		let bottom = this.y + this.height;
+		let otherLeft = obj.x;
+		let otherRight = obj.x + obj.width;
+		let otherTop = obj.y;
+		let otherBottom = obj.y + obj.height;
+
+		let overlap = true;
+		if ((bottom < otherTop) ||
+		   (top > otherBottom) ||
+		   (right < otherLeft) ||
+		   (left > otherRight)){
+			overlap = false;
 		}
-	
-		this.newPos = function(){
-			this.x += this.speedX;
-			this.y += this.speedY;
-		}
+
+		return overlap;
 	}
 }
 
-class obstacle extends component{
-	constructor(x, y,width,height,color){
-		super(x, y);
-		this.obj='obstacle';
+class Enemy extends LivingComponent{
+	constructor(id, x, y, width, height, speedX, speedY, maxHealth, damage, color){
+		super(id, x, y, width, height, speedX, speedY, maxHealth, damage, color);
 	}
 }
-
-class column extends obstacle{
-	constructor(x,y,width,height,color){ 
-		super(x,y);
-		this.width = width;
-		this.height = height;
-		this.color = color;
-		this.speedX = 0;
-		this.speedY = 0;
-		
-        this.update = function(){
-            let ctx = gameArea.context;
-            ctx.fillStyle = color;
-            ctx.fillRect(this.x, this.y, this.width, this.height);  
-        }
-		
-		this.newPos = function(){
-			this.x += this.speedX;
-			this.y += this.speedY;
-		}
-		
-	}
-}
-
-class enemy extends component{
-	constructor(x, y){
-		super(x, y);
-		this.obj='enemy';
-	}
-}
-
-class collectable extends component{
-	constructor(x, y){
-		super(x, y);
-		this.obj='collectable';
-	}
-}
-

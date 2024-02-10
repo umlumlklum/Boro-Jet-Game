@@ -1,5 +1,6 @@
 let gameArea = {
     canvas: document.createElement("canvas"),
+
     start: function(){
         this.canvas.width = canvasWidth;
         this.canvas.height = canvasHeight;
