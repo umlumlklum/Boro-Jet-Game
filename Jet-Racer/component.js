@@ -1,3 +1,4 @@
+/*
 ______Hierachy________
 component
 	text
