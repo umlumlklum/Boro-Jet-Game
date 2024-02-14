@@ -1,3 +1,4 @@
+var gameArea;
 var player;
 var obstacles = []; 
 var score;

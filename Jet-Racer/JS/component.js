@@ -79,22 +79,6 @@ class MovableComponent extends Component{
 	}
 }
 
-class Background extends MovableComponent{
-	constructor(x, y, width, height, speedX, speedY, color){
-		super('background', x, y, width, height, speedX, speedY, color);
-		this.image = new Image();
-		this.image.src = color;
-	}
-
-	update(){
-		this.move();
-
-		let ctx = gameArea.context;
-		ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
-		ctx.drawImage(this.image, this.x + this.width, this.y, this.width, this.height);
-	}
-}
-
 class Obstacle extends MovableComponent{
 	constructor(id, x, y, width, height, speedX, speedY, color){
 		super(id, x, y, width, height, speedX, speedY, color);
@@ -139,6 +123,10 @@ class LivingComponent extends MovableComponent{
 		if (this.health <= 0){
 			gameArea.stop(); // Death
 		}
+	}
+
+	attack(obj){
+		obj.takeDamage(this.damage);
 	}
 }
 

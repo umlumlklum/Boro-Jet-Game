@@ -1,4 +1,3 @@
-
 this.startTime = new Date().getTime();
 
 function everyInterval(n){
@@ -28,7 +27,6 @@ function fixLength(num, desiredLength) {
 
 function updateGameArea(){
     let obstacleSpeed = -2;
-    let backgroundSpeed = -1.5;
     let currentTime = new Date().getTime(); 
     time = ((currentTime - startTime) / 1000).toFixed(2);  // Convert milliseconds to seconds
     let x, height, gap, minHeight, maxHeight, minGap, maxGap;
@@ -41,8 +39,6 @@ function updateGameArea(){
     }
 
     gameArea.clear();
-    background.speedX = backgroundSpeed;
-    background.update();
     gameArea.frameNumber += 1;
 
     if (gameArea.frameNumber == 1 || everyInterval(150)){
@@ -68,5 +64,4 @@ function updateGameArea(){
     statBox.update();
     stats.text = "Distance: " + fixLength(distNum,5) +" | Time: "+fixLength(time,8) +" | LVL: "+fixLength(level,2)+" | Health: "+health+" | Power Ups: "+powerUps.length;
     stats.update();
-    
 }

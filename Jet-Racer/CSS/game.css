@@ -4,10 +4,33 @@
     box-sizing: border-box;
 }
 
-canvas{
-    background-color: aqua;
-}
-
 body{
     overflow: hidden;
+}
+
+canvas{
+    background-color: transparent;
+    z-index: 0;
+}
+
+.background {
+    z-index: -1;
+    width: 3600px;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    background: url("../IMGS/cloud.jpg");
+    background-repeat: repeat;
+    background-position: 0 0;
+    animation: animatedBackground var(--background-speed, 20s) linear infinite;
+}
+  
+@keyframes animatedBackground {
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      transform: translate3d(-900px, 0, 0);
+    }
 }
