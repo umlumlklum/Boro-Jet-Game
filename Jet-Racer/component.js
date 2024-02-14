@@ -1,7 +1,7 @@
-/*
 ______Hierachy________
 component
 	text
+	statBox 
 	movable   < Has x and y speed >
 		background
 		obstacles
@@ -38,17 +38,31 @@ class Component{
 }
 
 class Text extends Component{
-	constructor(x, y, width, height, color, type){ 
+	constructor(x, y, width, height, color){ 
 		super('text', x, y, width, height, color);
-        this.type = type;
+		this.update = function(){
+			let ctx = gameArea.context;
+			ctx.font = this.width + " " + this.height;
+			ctx.fillStyle = color;
+            ctx.fillText(this.text, this.x, this.y);
+		}
 	}
 
-	update(){
-		super.update();
+}
 
-		let ctx = gameArea.context;
-		ctx.font = this.width + " " + this.height;
+class StatBox extends Component{
+	constructor(x,y,width,height,color,opacity){
+    	super('statbox',x,y,width,height,color)
+		this.opacity = opacity
+		this.update = function(){
+            let ctx = gameArea.context;
+            ctx.fillStyle = color;
+			ctx.globalAlpha = this.opacity;
+            ctx.fillRect(this.x, this.y, this.width, this.height); 
+			ctx.globalAlpha = 1;
+        }
 	}
+
 }
 
 class MovableComponent extends Component{
