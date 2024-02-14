@@ -1,3 +1,6 @@
+
+this.startTime = new Date().getTime();
+
 function everyInterval(n){
     if((gameArea.frameNumber / n) % 1 == 0){ 
         return true; 
@@ -6,10 +9,28 @@ function everyInterval(n){
     return false;
 }
 
+function fixLength(num, desiredLength) { 
+    // Convert the number to a string
+    let numStr = num.toString();
+  
+    // If the number is shorter than the desired length, pad with leading zeros
+    while (numStr.length < desiredLength) {
+      numStr = ' ' + numStr;
+    }
+  
+    // If the number is longer than the desired length, truncate
+    if (numStr.length > desiredLength) {
+      numStr = numStr.slice(0, desiredLength);
+    }
+  
+    return numStr;
+}
+
 function updateGameArea(){
     let obstacleSpeed = -2;
     let backgroundSpeed = -1.5;
-
+    let currentTime = new Date().getTime(); 
+    time = ((currentTime - startTime) / 1000).toFixed(2);  // Convert milliseconds to seconds
     let x, height, gap, minHeight, maxHeight, minGap, maxGap;
 
     for (let i = 0; i < obstacles.length; i++){
@@ -42,8 +63,10 @@ function updateGameArea(){
         obstacles[i].update();
     }
 
-    let scoreNum = Math.floor(gameArea.frameNumber / 10)
-    score.text = "SCORE: " + scoreNum;
-    score.update();
     player.update();
+    let distNum = Math.floor(gameArea.frameNumber / 10);
+    statBox.update();
+    stats.text = "Distance: " + fixLength(distNum,5) +" | Time: "+fixLength(time,8) +" | LVL: "+fixLength(level,2)+" | Health: "+health+" | Power Ups: "+powerUps.length;
+    stats.update();
+    
 }
