@@ -2,6 +2,12 @@ var player;
 var obstacles = []; 
 var score;
 var background;
+var statBox;
+var stats; 
+var time = 0;
+var level = 1;
+var health = 1;
+let powerUps = [];
 
 //const canvasWidth = 450;
 const canvasWidth = window.innerWidth;
