@@ -8,6 +8,7 @@ var stats;
 var time = 0;
 var level = 1;
 var health = 1;
+let statBoxHeight = document.querySelector("#statBox").clientHeight;
 let powerUps = [];
 
 //const canvasWidth = 450;
