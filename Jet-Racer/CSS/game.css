@@ -26,15 +26,14 @@ canvas{
     position: absolute; 
     top:0;
     left:0;
-
 }
 
 .background {
     z-index: -1;
     width: 3600px;
     height: 100%;
-    margin-top: 52px; /* edit */
-    padding: 0px; /* edit */
+    margin-top: 52px;
+    padding: 0px; 
     top: 0;
     left: 0;
     position: absolute;
