@@ -11,9 +11,11 @@ class GameArea{
         this.frameNumber = 0;
         this.interval = setInterval(updateGameArea, 20);
     }
+
     clear(){
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
+    
     stop(){
         clearInterval(this.interval);
     }

@@ -26,17 +26,25 @@ function fixLength(num, desiredLength) {
 }
 
 function updateGameArea(){
-    let obstacleSpeed = -2;
-    let currentTime = new Date().getTime(); 
-    time = ((currentTime - startTime) / 1000).toFixed(2);  // Convert milliseconds to seconds
+    time = ((new Date().getTime() - startTime) / 1000).toFixed(2);  // Convert milliseconds to seconds
+    let speed = -1 * Math.sqrt(time) - 2;
+
     let x, height, gap, minHeight, maxHeight, minGap, maxGap;
 
-    for (let i = 0; i < obstacles.length; i++){
-        if (player.isOverlapping(obstacles[i])){
-            gameArea.stop();
-            return;
+    objects.forEach((object) => {
+        if (player.isOverlapping(object)){
+            switch (object.type){
+                case Components.Column:
+                    object.collide(player);
+                    objects.delete(object);
+                    return;
+                case Components.HealthPack:
+                    object.collect();
+                    objects.delete(object);
+                    break;
+            }
         }
-    }
+    });
 
     gameArea.clear();
     gameArea.frameNumber += 1;
@@ -49,19 +57,19 @@ function updateGameArea(){
         minGap = 50;
         maxGap = 200;
         gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
+        
+        objects.add(new Column(x, 0, 10, height, speed, 0, "green", 1));
+        objects.add(new Column(x, height + gap, 10, x - height - gap, speed, 0, "green", 1));
+    }
 
-        obstacles.push(new Column(x, 0, 10, height, 0, 0, "green"));
-        obstacles.push(new Column(x, height + gap, 10, x - height - gap, 0, 0, "green"));
-    }
-    
-    for (let i = 0; i < obstacles.length; i++){
-        obstacles[i].x += obstacleSpeed;
-        obstacles[i].update();
-    }
+    objects.forEach((object) => {
+        object.speedX = speed;
+        object.update();
+    });
 
     player.update();
-    let distNum = Math.floor(gameArea.frameNumber / 10);
+
     statBox.update();
-    stats.text = "Distance: " + fixLength(distNum,5) +" | Time: "+fixLength(time,8) +" | LVL: "+fixLength(level,2)+" | Health: "+health+" | Power Ups: "+powerUps.length;
+    stats.text = "Distance: " + fixLength(Math.floor(gameArea.frameNumber / 10),5) +" | Time: "+fixLength(time,8) + " | Speed: " + fixLength(Math.abs(speed), 4) + " | LVL: "+fixLength(level,2)+" | Health: "+player.health+" | Power Ups: "+player.powerUps.length;
     stats.update();
 }
