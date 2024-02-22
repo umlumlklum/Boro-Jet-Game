@@ -13,10 +13,28 @@ canvas{
     z-index: 0;
 }
 
+.stat-box{ 
+    z-index: 0;
+    text-indent: 4em;
+    padding: 0px; 
+    width: 100%;
+    height: 52px;
+    font-size: 30px;
+    color: white;
+    background-color: rgba(0, 0, 0, .7);
+    background-position: 0 0;
+    position: absolute; 
+    top:0;
+    left:0;
+
+}
+
 .background {
     z-index: -1;
     width: 3600px;
     height: 100%;
+    margin-top: 52px; /* edit */
+    padding: 0px; /* edit */
     top: 0;
     left: 0;
     position: absolute;
