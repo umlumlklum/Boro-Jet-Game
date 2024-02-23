@@ -34,7 +34,7 @@ function updateGameArea(){
         posColY = Math.floor(Math.random()*(maxColY-minColY+1)+minColY);
         objects.add(new Column(x, posColY, 10, colHeight, 0, 0, "green", 1));
     }
-
+    
     objects.forEach((object) => {
         object.speedX = -speed;
         object.update();
