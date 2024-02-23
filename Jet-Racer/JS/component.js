@@ -4,7 +4,6 @@ component
 	text
 	statBox 
 	movable   < Has x and y speed >
-		background
 		obstacles
 			movingSquare
 			crushSquares # incomplete
@@ -21,9 +20,18 @@ component
 				turret # incomplete
 ________________________
 */
+
+const Components = {
+	Text: Symbol("Text"),
+	StatBox: Symbol("StatBox"),
+	Column: Symbol("Column"),
+	HealthPack: Symbol("HealthPack"),
+	Player: Symbol("Player")
+}
+
 class Component{
-	constructor(id, x, y, width, height, color){
-		this.id = id;
+	constructor(type, x, y, width, height, color){
+		this.type = type;
         this.x = x;
         this.y = y;
 		this.width = width;
@@ -40,7 +48,7 @@ class Component{
 
 class Text extends Component{
 	constructor(x, y, width, height, color){ 
-		super('text', x, y, width, height, color);
+		super(Components.Text, x, y, width, height, color);
 		this.update = function(){
 			let ctx = gameArea.context;
 			ctx.font = this.width + " " + this.height;
@@ -53,7 +61,7 @@ class Text extends Component{
 
 class StatBox extends Component{
 	constructor(x,y,width,height,color,opacity){
-    	super('statbox',x,y,width,height,color)
+    	super(Components.StatBox,x,y,width,height,color)
 		this.opacity = opacity
 		this.update = function(){
             let ctx = gameArea.context;
@@ -67,10 +75,15 @@ class StatBox extends Component{
 }
 
 class MovableComponent extends Component{
-	constructor(id, x, y, width, height, speedX, speedY, color){
-		super(id, x, y, width, height, color);
+	constructor(type, x, y, width, height, speedX, speedY, color){
+		super(type, x, y, width, height, color);
 		this.speedX = speedX;
 		this.speedY = speedY;
+	}
+
+	update(){
+		this.move();
+		super.update();
 	}
 
 	move(){
@@ -80,30 +93,46 @@ class MovableComponent extends Component{
 }
 
 class Obstacle extends MovableComponent{
-	constructor(id, x, y, width, height, speedX, speedY, color){
-		super(id, x, y, width, height, speedX, speedY, color);
+	constructor(type, x, y, width, height, speedX, speedY, color){
+		super(type, x, y, width, height, speedX, speedY, color);
 	}
+
+	collide(){}
 }
 
 class Column extends Obstacle{
-	constructor(x, y, width, height, speedX, speedY, color){ 
-		super('column', x, y, width, height, speedX, speedY, color);
+	constructor(x, y, width, height, speedX, speedY, color, damage){ 
+		super(Components.Column, x, y, width, height, speedX, speedY, color);
+		this.damage = damage;
 	}
 
-	update(){
-		super.update();
+	collide(obj){
+		obj.takeDamage(this.damage);
 	}
 }
 
 class Collectable extends MovableComponent{
-	constructor(id, x, y, width, height, speedX, speedY, color){
-		super(id, x, y, width, height, speedX, speedY, color);
+	constructor(type, x, y, width, height, speedX, speedY, color){
+		super(type, x, y, width, height, speedX, speedY, color);
+	}
+
+	collect(){}
+}
+
+class HealthPack extends Collectable{
+	constructor(x, y, width, height, speedX, speedY, color, healValue){
+		super(Components.HealthPack, x, y, width, height, speedX, speedY, color);
+		this.healValue = healValue;
+	}
+
+	collect(){
+		player.heal(this.healValue);
 	}
 }
 
 class LivingComponent extends MovableComponent{
-	constructor(id, x, y, width, height, speedX, speedY, maxHealth, damage, color){
-		super(id, x, y, width, height, speedX, speedY, color);
+	constructor(type, x, y, width, height, speedX, speedY, maxHealth, damage, color){
+		super(type, x, y, width, height, speedX, speedY, color);
 		this.health = maxHealth;
 		this.maxHealth = maxHealth;
 		this.damage = damage;
@@ -132,7 +161,8 @@ class LivingComponent extends MovableComponent{
 
 class Player extends LivingComponent{
 	constructor(x, y, width, height, speedX, speedY, maxHealth, damage, color){ 
-		super('player', x, y, width, height, speedX, speedY, maxHealth, damage, color);
+		super(Components.Player, x, y, width, height, speedX, speedY, maxHealth, damage, color);
+		this.powerUps = [];
 	}
 
 	update(){
@@ -163,7 +193,7 @@ class Player extends LivingComponent{
 }
 
 class Enemy extends LivingComponent{
-	constructor(id, x, y, width, height, speedX, speedY, maxHealth, damage, color){
-		super(id, x, y, width, height, speedX, speedY, maxHealth, damage, color);
+	constructor(type, x, y, width, height, speedX, speedY, maxHealth, damage, color){
+		super(type, x, y, width, height, speedX, speedY, maxHealth, damage, color);
 	}
 }

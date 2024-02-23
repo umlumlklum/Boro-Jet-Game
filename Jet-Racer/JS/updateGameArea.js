@@ -1,61 +1,47 @@
 this.startTime = new Date().getTime();
 
 function everyInterval(n){
-    if((gameArea.frameNumber / n) % 1 == 0){ 
-        return true; 
-    }
-
-    return false;
-}
-
-function fixLength(num, desiredLength) { 
-    // Convert the number to a string
-    let numStr = num.toString();
-  
-    // If the number is shorter than the desired length, pad with leading zeros
-    while (numStr.length < desiredLength) {
-      numStr = ' ' + numStr;
-    }
-  
-    // If the number is longer than the desired length, truncate
-    if (numStr.length > desiredLength) {
-      numStr = numStr.slice(0, desiredLength);
-    }
-  
-    return numStr;
+    return (gameArea.frameNumber / n) % 1 == 0;
 }
 
 function updateGameArea(){
-    let obstacleSpeed = -2;
-    let currentTime = new Date().getTime(); 
-    time = ((currentTime - startTime) / 1000).toFixed(2);  // Convert milliseconds to seconds
-    let x, height, gap, minHeight, maxHeight, minGap, maxGap;
+    time = ((new Date().getTime() - startTime) / 1000).toFixed(2);  // Convert milliseconds to seconds
+    let speed = Math.sqrt(time) + 2;
 
-    for (let i = 0; i < obstacles.length; i++){
-        if (player.isOverlapping(obstacles[i])){
-            gameArea.stop();
-            return;
+    objects.forEach((object) => {
+        if (player.isOverlapping(object)){
+            switch (object.type){
+                case Components.Column:
+                    object.collide(player);
+                    objects.delete(object);
+                    return;
+                case Components.HealthPack:
+                    object.collect();
+                    objects.delete(object);
+                    break;
+            }
         }
-    }
+    });
 
     gameArea.clear();
     gameArea.frameNumber += 1;
 
     if (gameArea.frameNumber == 1 || everyInterval(150)){
-        x = gameArea.canvas.width;
-        colHeight = 222;
+        let x = gameArea.canvas.width;
+        let colHeight = 222;
         minColY = statBoxHeight;
         maxColY = canvasHeight-colHeight;
         posColY = Math.floor(Math.random()*(maxColY-minColY+1)+minColY);
-        obstacles.push(new Column(x, posColY, 10, colHeight, 0, 0, "green"));
+        objects.add(new Column(x, posColY, 10, colHeight, 0, 0, "green", 1));
     }
     
-    for (let i = 0; i < obstacles.length; i++){
-        obstacles[i].x += obstacleSpeed;
-        obstacles[i].update();
-    }
+    objects.forEach((object) => {
+        object.speedX = -speed;
+        object.update();
+    });
 
     player.update();
+
     let distNum = Math.floor(gameArea.frameNumber / 10);
-    document.getElementById("statBox").textContent = "Distance: " + fixLength(distNum,5) +" | Time: "+fixLength(time,8) +" | LVL: "+fixLength(level,2)+" | Health: "+health+" | Power Ups: "+powerUps.length;
+    document.getElementById("statBox").textContent = "Distance: " + distNum.toFixed(0) + " | Time: " + time + " | Speed: " + speed.toFixed(2) + " | LVL: " + level.toFixed(0) + " | Health: " + player.health.toFixed(0) + " | Power Ups: " + player.powerUps.length.toFixed(0);
 }
