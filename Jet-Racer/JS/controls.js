@@ -1,4 +1,4 @@
-let keys = {};
+var keys = {};
 
 document.addEventListener('keydown', (e) => {
     keys[e.key] = true;

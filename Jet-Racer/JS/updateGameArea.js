@@ -6,7 +6,11 @@ function everyInterval(n){
 
 function updateGameArea(){
     time = ((new Date().getTime() - startTime) / 1000).toFixed(2);  // Convert milliseconds to seconds
-    let speed = Math.sqrt(time) + 2;
+    speed = Math.sqrt(time) + 2 + speedMod;
+    
+    if (speed < 0){
+        speed = 0;
+    }
 
     objects.forEach((object) => {
         if (player.isOverlapping(object)){
@@ -20,6 +24,10 @@ function updateGameArea(){
                     objects.delete(object);
                     return;
                 case Components.HealthPack:
+                    object.collect();
+                    objects.delete(object);
+                    break;
+                case Components.Slow:
                     object.collect();
                     objects.delete(object);
                     break;
