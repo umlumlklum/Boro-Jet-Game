@@ -11,7 +11,7 @@ component
 		collectable
 			barrelRoll # incomplete
 			healthPoint # incomplete
-			slowDown
+			slowDown # incomplete
 		living   < Has health and damage >
 			player
 			enemy
@@ -228,6 +228,13 @@ class Player extends LivingComponent{
 		super(Components.Player, x, y, width, height, speedX, speedY, maxHealth, damage, color);
 		this.powerUps = [];
 	}
+	update() { 
+		if (keys['w'] || keys['W']) {
+		  this.y -= this.speedY;
+		  this.speedY += 0.2;
+		} else if (keys['s'] || keys['S']) {
+		  this.y += this.speedY;
+		  this.speedY += 0.2;
 
 	update() { 
 		if (keys['w'] || keys['W']) {
