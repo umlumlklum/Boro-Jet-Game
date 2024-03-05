@@ -55,7 +55,7 @@ function updateGameArea(){
         posMSY = Math.floor(Math.random()*(maxMSY-minMSY+1)+minMSY);
         objects.add(new MovingSquare(x, posMSY, sizeMS, sizeMS, 0, speed/100+2, "black", 1));
     }
-
+    
     objects.forEach((object) => {
         object.speedX = -speed;
         object.update();
