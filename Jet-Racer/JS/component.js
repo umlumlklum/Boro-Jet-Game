@@ -5,19 +5,19 @@ component
 	statBox 
 	movable   < Has x and y speed >
 		obstacles
-			movingSquare
-			crushSquares # incomplete
 			columns
-			spinningPin # incomplete
+			movingSquare 
+			crushSquares # incomplete
 		collectable
-			barellRoll # incomplete
+			barrelRoll # incomplete
 			healthPoint # incomplete
+			slowDown
 		living   < Has health and damage >
 			player
 			enemy
 				missile # incomplete
 				bug # incomplete
-				turret # incomplete
+				turret # incomplete	
 ________________________
 */
 
@@ -26,6 +26,7 @@ const Components = {
 	StatBox: Symbol("StatBox"),
 	Column: Symbol("Column"),
 	HealthPack: Symbol("HealthPack"),
+	Slow: Symbol("Slow"),
 	Player: Symbol("Player")
 }
 
@@ -83,12 +84,23 @@ class MovableComponent extends Component{
 
 	update(){
 		this.move();
+		this.clampToBounds();
 		super.update();
 	}
 
 	move(){
 		this.x += this.speedX;
 		this.y += this.speedY;
+	}
+
+	clampToBounds(){
+		if ((this.y + this.height) > canvasHeight){
+			this.y = canvasHeight - this.height;
+			this.speedY = 0;
+		} else if (this.y < 0){
+			this.y = 0;
+			this.speedY = 0;
+		}
 	}
 }
 
@@ -97,7 +109,9 @@ class Obstacle extends MovableComponent{
 		super(type, x, y, width, height, speedX, speedY, color);
 	}
 
-	collide(){}
+	collide(obj){
+		obj.takeDamage(this.damage);
+	}
 }
 
 class Column extends Obstacle{
@@ -105,10 +119,45 @@ class Column extends Obstacle{
 		super(Components.Column, x, y, width, height, speedX, speedY, color);
 		this.damage = damage;
 	}
+}
+
+class MovingSquare extends Obstacle{
+	constructor(x, y, width, height, speedX, speedY, color, damage){ 
+		super(Components.MovingSquare, x, y, width, height, speedX, speedY, color);
+		this.damage = damage;
+
+		this.down = Math.floor(Math.random()*(1-0+1)+0);
+	}
+
+	move(){
+		this.x += this.speedX;
+
+		if (this.down == true){
+			this.y = this.y + this.speedY;
+
+			if (this.y + this.height >= canvasHeight){
+				this.y -= (this.speedY + 1);
+				this.down = false;
+			}
+		} else {
+			this.y = this.y - this.speedY;
+
+			if (statBoxHeight >= this.y){
+				this.y += this.speedY + 1;
+				this.down = true;
+			}
+		}
+	}
+
+	update(){
+		this.move();
+		super.update();
+	}
 
 	collide(obj){
 		obj.takeDamage(this.damage);
 	}
+
 }
 
 class Collectable extends MovableComponent{
@@ -127,6 +176,21 @@ class HealthPack extends Collectable{
 
 	collect(){
 		player.heal(this.healValue);
+	}
+}
+
+class Slow extends Collectable{
+	constructor(x, y, width, height, speedX, speedY, color, slowValue){
+		super(Components.Slow, x, y, width, height, speedX, speedY, color);
+		this.slowValue = slowValue;
+	}
+
+	collect(){
+		speedMod -= this.slowValue;
+
+		setTimeout(() => {
+			speedMod += this.slowValue;
+		}, 1000);
 	}
 }
 
@@ -165,9 +229,26 @@ class Player extends LivingComponent{
 		this.powerUps = [];
 	}
 
-	update(){
-		this.move();
+	update() { 
+		if (keys['w'] || keys['W']) {
+		  	this.speedY -= 0.3;
+		} else if (keys['s'] || keys['S']) {
+			this.speedY += 0.3;
+		} else if (keys["Escape"]){
+            let item = new PauseMenu();
+            item.OpenPauseMenu();
+		} else {
+			if (this.speedY > 0.5){
+				this.speedY -= 0.3;
+			} else if (this.speedY < -0.5){
+				this.speedY += 0.3;
+			} else {
+				this.speedY = 0;
+			}
+		}
+
 		super.update();
+		//requestAnimationFrame(this.update);
 	}
 
 	isOverlapping(obj){
