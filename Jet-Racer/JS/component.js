@@ -97,8 +97,8 @@ class MovableComponent extends Component{
 		if ((this.y + this.height) > canvasHeight){
 			this.y = canvasHeight - this.height;
 			this.speedY = 0;
-		} else if (this.y < 0){
-			this.y = 0;
+		} else if (this.y-statBoxHeight < 0){
+			this.y = statBoxHeight;
 			this.speedY = 0;
 		}
 	}
@@ -225,8 +225,13 @@ class LivingComponent extends MovableComponent{
 
 class Player extends LivingComponent{
 	constructor(x, y, width, height, speedX, speedY, maxHealth, damage, color){ 
-		super(Components.Player, x, y, width, height, speedX, speedY, maxHealth, damage, color);
+		super(Components.Player, x, y+statBoxHeight, width, height, speedX, speedY, maxHealth, damage, color);
 		this.powerUps = [];
+		this.hasAvatar = localStorage.getItem("avatar") !== null;
+		if (this.hasAvatar){
+			this.avatar = localStorage.getItem("avatar");
+		}
+
 	}
 
 	update() { 
@@ -247,8 +252,19 @@ class Player extends LivingComponent{
 			}
 		}
 
-		super.update();
-		//requestAnimationFrame(this.update);
+		this.move();
+		this.clampToBounds();
+
+		let ctx = gameArea.context;
+		const image = new Image();
+		if (this.hasAvatar == true){
+			image.src= this.avatar
+			ctx.drawImage(image,this.x, this.y, this.width, this.height);
+		}else{
+			ctx.fillStyle = this.color;
+			ctx.fillRect(this.x, this.y, this.width, this.height);
+		}
+		requestAnimationFrame(this.update);
 	}
 
 	isOverlapping(obj){
