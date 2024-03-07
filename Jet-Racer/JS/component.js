@@ -1,23 +1,22 @@
 /*
 ______Hierachy________
-component
-	text
-	statBox 
-	movable   < Has x and y speed >
-		obstacles
-			columns
-			movingSquare 
+components
+	Text
+	Statbox
+	MoveableComponent < Has x and y speed >
+		Obstacle
+			column
+			MovingSquare
 			crushSquares # incomplete
-		collectable
-			barrelRoll # incomplete
-			healthPoint # incomplete
-			slowDown # incomplete
-		living   < Has health and damage >
-			player
-			enemy
-				missile # incomplete
-				bug # incomplete
-				turret # incomplete	
+		Collectable
+			Healthpack # incomplete
+			Slow # incomplete
+	LivingComponent < Has health and damage >
+		Player
+		Enemy
+			missile # incomplete
+			bug # incomplete
+			turret # incomplete	
 ________________________
 */
 
