@@ -11,7 +11,6 @@ class PauseMenu{
             let newModal = document.getElementById("modal");
             newModal.style.display = "none";
             gameArea.restart();
-            gameArea.start();
         });
 
         this.resumeBtn.addEventListener("click", function(){
