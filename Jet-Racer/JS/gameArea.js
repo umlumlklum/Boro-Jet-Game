@@ -12,6 +12,21 @@ class GameArea{
         this.interval = setInterval(updateGameArea, 15);
     }
 
+    restart(){
+        gameArea;
+        player;
+        objects = new Set();
+        score = 0;
+        time = 0;
+        speed = 0;
+        speedMod = 0;
+        level = 1;
+    }
+
+    resume(){
+        this.interval = setInterval(updateGameArea, 15);
+    }
+
     clear(){
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
