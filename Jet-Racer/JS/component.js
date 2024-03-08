@@ -263,7 +263,6 @@ class Player extends LivingComponent{
 			ctx.fillStyle = this.color;
 			ctx.fillRect(this.x, this.y, this.width, this.height);
 		}
-		requestAnimationFrame(this.update);
 	}
 
 	isOverlapping(obj){
