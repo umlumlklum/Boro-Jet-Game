@@ -49,3 +49,10 @@ next.addEventListener("click",function(){
 	playerAvatar.src= playerAvatar.src.replace(file,characters[nextIndex]);
 	file = characters[nextIndex];
 });
+
+let audio = new Audio('/Jet-Racer/AUDIO/ship_select_music.wav');
+document.addEventListener("click", () =>{
+    audio.volume = getMusicVolume();
+    audio.play();
+    audio.loop = true;
+});
