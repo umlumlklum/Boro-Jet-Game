@@ -3,7 +3,7 @@ const back = document.getElementById("back");
 const playerAvatar = document.getElementById("playerAvatar");
 const next = document.getElementById("next");
 const prev = document.getElementById("prev");
-const characters = ["jet_logo.png", "Ship.png"];
+const characters = ["jet_logo.png", "sunfish.png","galactic_fleet_ship.png","modern_UFO.png"];
 let file = "";
 
 window.addEventListener('load',function(){
