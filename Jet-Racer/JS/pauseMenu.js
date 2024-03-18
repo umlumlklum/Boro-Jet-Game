@@ -10,12 +10,14 @@ class PauseMenu{
         this.restartBtn.addEventListener("click", function(){
             let newModal = document.getElementById("modal");
             newModal.style.display = "none";
-            gameArea.start();
+            gameArea.restart();
         });
 
         this.resumeBtn.addEventListener("click", function(){
             let newModal = document.getElementById("modal");
             newModal.style.display = "none";
+            gameArea.clear();
+            gameArea.resume();
         });
         
         window.addEventListener("click", function(e){
@@ -23,6 +25,8 @@ class PauseMenu{
             if(e.target == newModal){
                 newModal.style.display = "none";
             }
+            gameArea.clear();
+            gameArea.resume();
         });
     }
 

@@ -1,0 +1,48 @@
+[
+   {
+      "levelID": 1,
+      "baseSpeed": 2.5,
+      "timeLimit": 30.0,
+      "spawnFrequency": 5.0,
+      "objects": [
+         {
+            "objectID": "HealthPack",
+            "spawnRate": 0.05,
+            "startTime": 10.0,
+            "endTime": 25.0
+         },
+         {
+            "objectID": "MovingSquare",
+            "spawnRate": 0.15,
+            "startTime": 0.0,
+            "endTime": 30.0
+         },
+         {
+            "objectID": "Missile",
+            "spawnRate": 0.25,
+            "startTime": 5.0,
+            "endTime": 30.0
+         }
+      ]
+   },
+   {
+      "levelID": 2,
+      "baseSpeed": 3.5,
+      "timeLimit": 60.0,
+      "spawnFrequency": 10.0,
+      "objects": [
+         {
+            "objectID": "HealthPack",
+            "spawnRate": 0.1,
+            "startTime": 0.0,
+            "endTime": 30.0
+         },
+         {
+            "objectID": "MovingSquare",
+            "spawnRate": 0.5,
+            "startTime": 15.0,
+            "endTime": 60.0
+         }
+      ]
+   }
+]

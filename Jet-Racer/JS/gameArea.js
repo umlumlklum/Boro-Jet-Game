@@ -9,7 +9,15 @@ class GameArea{
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNumber = 0;
-        this.interval = setInterval(updateGameArea, 15);
+        this.interval = setInterval(updateGameArea, 1000 / frameRate);
+    }
+
+    restart(){
+        location.reload();
+    }
+
+    resume(){
+        this.interval = setInterval(updateGameArea, 1000 / frameRate);
     }
 
     clear(){

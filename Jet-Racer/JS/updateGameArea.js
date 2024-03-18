@@ -4,65 +4,132 @@ function everyInterval(n){
     return (gameArea.frameNumber / n) % 1 == 0;
 }
 
-function updateGameArea(){
-    time = ((new Date().getTime() - startTime) / 1000).toFixed(2);  // Convert milliseconds to seconds
-    speed = Math.sqrt(time) + 2 + speedMod;
-    
-    if (speed < 0){
-        speed = 0;
-    }
+// With a given level config, finds every object that can be currently spawned.
+function findSpawnableObjects(levelObjects){
+    spawnables = new Set();
 
-    objects.forEach((object) => {
-        if (player.isOverlapping(object)){
-            switch (object.type){
-                case Components.Column:
-                    object.collide(player);
-                    objects.delete(object);
-                    return;
-                case Components.MovingSquare:
-                    object.collide(player);
-                    objects.delete(object);
-                    return;
-                case Components.HealthPack:
-                    object.collect();
-                    objects.delete(object);
-                    break;
-                case Components.Slow:
-                    object.collect();
-                    objects.delete(object);
-                    break;
+    // Checks each potential object for the current level.
+    levelObjects.forEach((object) => {
+        // Passes if current time is within the time frame of the object.
+        if (time >= object.startTime && time <= object.endTime){
+            // Passes if spawn rate condition is met.
+            if (object.spawnRate >= Math.random()){
+                spawnables.add(object.objectID);
             }
         }
     });
 
+    return spawnables;
+}
+
+function spawnObjects(spawnables){
+    let x = gameArea.canvas.width;
+
+    // Spawns an object based on if its spawnable.
+    spawnables.forEach((object) => {
+        switch (Objects[object]){
+            case Objects.Column:
+                // Needs implemented.
+                break;
+            case Objects.MovingSquare:
+                objects.add(new MovingSquare(x, Math.random()*canvasHeight, 100, 100, 0, speed/100+2, 1, "black"));
+                break;
+            case Objects.HealthPack:
+                objects.add(new HealthPack(x, Math.random()*canvasHeight, 50, 50, 0, 0, 1, "green"));
+                break;
+            case Objects.Slow:
+                objects.add(new Slow(x, Math.random()*canvasHeight, 50, 50, 0, 0, 1, "blue"));
+                break;
+            case Objects.Missile:
+                objects.add(new Missile(x, Math.random()*(canvasHeight-200)+100, 50, 20, 0, 0, 1, 1, "red"));
+                break;
+            default:
+                break;
+        }
+    });
+
+    return;
+}
+
+// Broadcasts updates to collision, movement, and rendering to each object.
+function updateObjects(){
+    objects.forEach((object) => {
+        if (player.isOverlapping(object)){
+            switch (object.type){
+                case Objects.Column:
+                    object.collideWith(player);
+                    objects.delete(object);
+                    return;
+                case Objects.MovingSquare:
+                    object.collideWith(player);
+                    objects.delete(object);
+                    return;
+                case Objects.HealthPack:
+                    object.collect();
+                    objects.delete(object);
+                    break;
+                case Objects.Slow:
+                    object.collect();
+                    objects.delete(object);
+                    break;
+                case Objects.Missile:
+                    object.interactWith(player);
+                    objects.delete(object);
+                    break;
+            }
+        }
+
+        if (object.type == Objects.Missile){
+            object.target(player);
+        }
+
+        console.log(object.color);
+
+        object.speedX = -speed;
+        object.move();
+        object.clampToBounds();
+        object.render();
+    });
+
+    return;
+}
+
+// Updates the game, is called every once per interval from the gameArea.
+function updateGameArea(){
+    // Fetches the level config.
+    let config;
+    for (let i = 0; i < levelConfig.length; i++){
+        if (levelConfig[i].levelID == level){
+            config = levelConfig[i];
+        }
+    }
+
+    // Clears the frame to redraw the scene.
     gameArea.clear();
     gameArea.frameNumber += 1;
 
-    if (gameArea.frameNumber == 1 || everyInterval(150)){
-        let x = gameArea.canvas.width;
-        
-        // column values
-        let colHeight = 222;
-        minColY = statBoxHeight;
-        maxColY = canvasHeight-colHeight;
-        posColY = Math.floor(Math.random()*(maxColY-minColY+1)+minColY);
-        // objects.add(new Column(x, posColY, 10, colHeight, 0, 0, "green", 1));
+    // Updates distance based on number of frames passed.
+    distance = Math.floor(gameArea.frameNumber / 10);
 
-        // moving square values 
-        let sizeMS = 100
-        minMSY = statBoxHeight;
-        maxMSY = canvasHeight-sizeMS;
-        posMSY = Math.floor(Math.random()*(maxMSY-minMSY+1)+minMSY);
-        objects.add(new MovingSquare(x, posMSY, sizeMS, sizeMS, 0, speed/100+2, "black", 1));
+    // Updates time spent in the level.
+    time = ((new Date().getTime() - startTime) / 1000).toFixed(2);  // Convert milliseconds to seconds
+
+    // Sets game speed based on current level config.
+    speed = config.baseSpeed;
+
+    // Attempts to spawn objects every interval.
+    if (gameArea.frameNumber % (frameRate / config.spawnFrequency) == 0){
+        spawnObjects(findSpawnableObjects(config.objects));
     }
-    
-    objects.forEach((object) => {
-        object.speedX = -speed;
-        object.update();
-    });
 
-    player.update();
+    // Updates all objects once per interval.
+    updateObjects();
 
-    let distNum = Math.floor(gameArea.frameNumber / 10);
-    document.getElementById("statBox").textContent = "Distance: " + distNum.toFixed(0) + " | Time: " + time + " | Speed: " + speed.toFixed(2) + " | LVL: " + level.toFixed(0) + " | Health: " + player.health.toFixed(0) + " | Power Ups: " + player.powerUps.length.toFixed(0);
+    // Updates the player.
+    player.handleInput();
+    player.move();
+    player.clampToBounds();
+    player.render();
+
+    document.getElementById("statBox").textContent = "Level: " + level.toFixed(0) + " | Distance: " + distance.toFixed(0) + " | Time: " + time + " | Speed: " + speed.toFixed(2) + " | Health: " + player.health.toFixed(0) + " | Power Ups: " + player.powerUps.length.toFixed(0);
 }
