@@ -1,11 +1,14 @@
 var gameArea;
 var player;
 var objects = new Set();
-var score = 0;
+
 var time = 0;
 var speed = 0;
-var speedMod = 0;
+var distance = 0;
 var level = 1;
+
+var levelConfig;
+var frameRate = 200;
 
 var stats;
 var statBox;
