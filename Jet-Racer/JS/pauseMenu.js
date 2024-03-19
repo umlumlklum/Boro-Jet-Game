@@ -1,5 +1,11 @@
 class PauseMenu{
     constructor(){
+        // Singleton
+        if (PauseMenu.instance) {
+            return PauseMenu.instance;
+        }
+        PauseMenu.instance = this;
+
         this.item = document.getElementsByTagName("canvas")[0];
         document.body.insertBefore(this.#insertModal(), this.item);
 
@@ -16,8 +22,6 @@ class PauseMenu{
         this.resumeBtn.addEventListener("click", function(){
             let newModal = document.getElementById("modal");
             newModal.style.display = "none";
-            gameArea.clear();
-            gameArea.resume();
         });
         
         window.addEventListener("click", function(e){
@@ -26,7 +30,7 @@ class PauseMenu{
                 newModal.style.display = "none";
             }
             gameArea.clear();
-            gameArea.resume();
+            gameArea.start();
         });
     }
 
