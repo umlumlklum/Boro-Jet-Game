@@ -2,7 +2,7 @@ const settings = document.getElementById("settings");
 const volumeSlider = document.getElementById("volumeSlider");
 
 let audio = new Audio('/Jet-Racer/AUDIO/main_menu_music.wav');
-document.addEventListener("click", () =>{
+window.addEventListener("click", () =>{
     audio.volume = getMusicVolume();
     audio.play();
     audio.loop = true;

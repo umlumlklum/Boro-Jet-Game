@@ -52,7 +52,7 @@ next.addEventListener("click",function(){
 
 let audio = new Audio('/Jet-Racer/AUDIO/ship_select_music.wav');
 document.addEventListener("click", () =>{
-    audio.volume = getMusicVolume();
+    audio.volume = 0.5;
     audio.play();
     audio.loop = true;
 });
