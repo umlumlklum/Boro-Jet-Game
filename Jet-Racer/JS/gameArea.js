@@ -9,7 +9,7 @@ class GameArea{
     }
 
     start(){
-        this.interval = setInterval(updateGameArea, 15);
+        this.interval = setInterval(updateGameArea, 1000 / frameRate);
     }
 
     restart(){
