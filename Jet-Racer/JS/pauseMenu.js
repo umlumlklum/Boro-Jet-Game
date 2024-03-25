@@ -18,7 +18,7 @@ class PauseMenu{
         this.homeBtn = document.getElementById("home");
 
         this.homeBtn.addEventListener("click", function(){
-            location.href = "/Jet-Racer/index.html";
+            location.href = "./..";
         });
 
         this.restartBtn.addEventListener("click", function(){
