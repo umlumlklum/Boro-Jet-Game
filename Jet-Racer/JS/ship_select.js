@@ -14,7 +14,7 @@ window.addEventListener('load',function(){
 		let currentShip= parts[parts.length-1];
 		if(currentShip !== shipFile)
 			playerAvatar.src= playerAvatar.src.replace(currentShip,shipFile);
-		localStorage.clear();
+		localStorage.removeItem('shipFile');
 	}
 });
 
