@@ -225,6 +225,8 @@ class LivingObject extends MovableObject{
 		this.health -= damage;
 
 		if (this.health <= 0){
+			let deathMenu = new DeathMenu();
+			deathMenu.OpenDeathMenu();
 			gameArea.stop(); // Death
 		}
 	}
