@@ -28,7 +28,7 @@ canvas{
     left:0;
 }
 
-.background {
+#background {
     z-index: -1;
     width: 3600px;
     height: 100%;
@@ -37,7 +37,7 @@ canvas{
     top: 0;
     left: 0;
     position: absolute;
-    background: url("../IMGS/Backgrounds/Zone_1/cloud.jpg");
+    background: url("../IMGS/Backgrounds/Zone_1/airport.PNG");
     background-repeat: repeat;
     background-position: 0 0;
     animation: animatedBackground var(--background-speed, 20s) linear infinite;
