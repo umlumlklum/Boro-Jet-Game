@@ -17,6 +17,10 @@ startShipSelect.addEventListener("click",function(){
     location.href="./HTML/ship_select.html"
 });
 
+startZoneSelect.addEventListener("click",function(){ 
+    location.href="./HTML/zoneSelect.html"
+});
+
 const hasShipFile = localStorage.getItem('shipFile') !== null;
 if (hasShipFile){
     const shipFile = localStorage.getItem('shipFile');
