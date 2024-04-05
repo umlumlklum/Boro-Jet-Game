@@ -38,6 +38,7 @@ canvas{
     left: 0;
     position: absolute;
     background: url("../IMGS/Backgrounds/Zone_1/airport.PNG");
+    background-size: cover;
     background-repeat: repeat;
     background-position: 0 0;
     animation: animatedBackground var(--background-speed, 20s) linear infinite;
