@@ -29,3 +29,16 @@ if (hasShipFile){
     if(currentShip !== shipFile)
         playerAvatar.src= playerAvatar.src.replace(currentShip,shipFile);
 }
+
+const hasZoneFiles = localStorage.getItem('zoneFiles') !== null;
+if (!hasZoneFiles){
+    let zones = new Map();
+    zones.set("Zone_1",["airport.PNG", "city.jpeg","cloud.jpg","space.png"]);
+    zones.set("Zone_5",["Level_1_MoonBase35.png","Level_2_DuneZone.png","Level_3_Flooded_Forrest.png","Level_4_Lithomen_Domain.png"]);
+    let zoneEntries = Array.from(zones.entries());
+	// set defualt zone
+    const selectedZone = zoneEntries[0];
+	localStorage.setItem('zoneFiles',JSON.stringify(selectedZone));
+}
+
+
