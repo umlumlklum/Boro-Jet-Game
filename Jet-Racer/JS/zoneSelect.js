@@ -22,6 +22,7 @@ window.addEventListener('load',function(){	const hasZoneFiles = localStorage.get
 			file = zoneFiles[0];
 			zone.src= zone.src.replace(startingZone,currentZone);
 		}
+		localStorage.removeItem('zoneFiles'); //edit
 	}
 	zone.style.display = 'block';
 });
