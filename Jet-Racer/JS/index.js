@@ -14,7 +14,7 @@ startEndlessBtn.addEventListener("click", function(){
 });
 
 startShipSelect.addEventListener("click",function(){ 
-    location.href="./HTML/ship_select.html"
+    location.href="./HTML/shipSelect.html"
 });
 
 startZoneSelect.addEventListener("click",function(){ 
