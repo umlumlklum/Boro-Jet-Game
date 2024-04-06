@@ -32,16 +32,19 @@ function spawnObjects(spawnables){
                 // Needs implemented.
                 break;
             case Objects.MovingSquare:
-                objects.add(new MovingSquare(x, Math.random()*canvasHeight, 100, 100, 0, speed/100+2, 1, "black"));
+                objects.add(new MovingSquare(x, /*Math.random()*canvasHeight*/(canvasHeight/2)-(Math.random()*300), 120, 120, 0, speed/100+2, 1, "black"));
                 break;
             case Objects.HealthPack:
-                objects.add(new HealthPack(x, Math.random()*canvasHeight, 50, 50, 0, 0, 1, "green"));
+                objects.add(new HealthPack(x, Math.random()*canvasHeight, 60, 60, 0, 0, 1, "green"));
                 break;
             case Objects.Slow:
-                objects.add(new Slow(x, Math.random()*canvasHeight, 50, 50, 0, 0, 1, "blue"));
+                objects.add(new Slow(x, Math.random()*canvasHeight, 60, 60, 0, 0, 1, "blue"));
+                break;
+            case Objects.Phase:
+                objects.add(new Phase(x, Math.random()*canvasHeight, 60, 60, 0, 0, 5000, "white"));
                 break;
             case Objects.Missile:
-                objects.add(new Missile(x, Math.random()*(canvasHeight-200)+100, 50, 20, 0, 0, 1, 1, "red"));
+                objects.add(new Missile(x, Math.random()*(canvasHeight-200)+100, 70, 30, 0, 0, 1, 1, "red"));
                 break;
             default:
                 break;
@@ -69,6 +72,10 @@ function updateObjects(){
                     objects.delete(object);
                     break;
                 case Objects.Slow:
+                    object.collect();
+                    objects.delete(object);
+                    break;
+                case Objects.Phase:
                     object.collect();
                     objects.delete(object);
                     break;

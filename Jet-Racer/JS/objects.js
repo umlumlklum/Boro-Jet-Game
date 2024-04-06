@@ -31,6 +31,7 @@ const Objects = {
 	// Collectable enums.
 	HealthPack: Symbol("HealthPack"),
 	Slow: Symbol("Slow"),
+	Phase: Symbol("Phase"),
 
 	// Enemy enums.
 	Missile: Symbol("Missile"),
@@ -130,6 +131,7 @@ class Column extends Obstacle{
 class MovingSquare extends Obstacle{
 	constructor(x, y, width, height, speedX, speedY, damage, color){ 
 		super(Objects.MovingSquare, x, y, width, height, speedX, speedY, damage, color);
+		this.avatar = "../IMGS/Characters/Enemies/MovingSquare.png";
 
 		// Random chance to start moving in a downward motion.
 		this.down = Math.floor(Math.random()*(1-0+1)+0);
@@ -175,6 +177,7 @@ class HealthPack extends Collectable{
 	constructor(x, y, width, height, speedX, speedY, healValue, color){
 		super(Objects.HealthPack, x, y, width, height, speedX, speedY, color);
 		this.healValue = healValue;
+		this.avatar = "../IMGS/Collectables/HealthPack.png";
 	}
 
 	// Upon being collected, heals the player a specified amount.
@@ -197,6 +200,31 @@ class Slow extends Collectable{
 		setTimeout(() => {
 			//speedMod += this.slowValue;
 		}, 1000);
+	}
+}
+
+class Phase extends Collectable{
+	constructor(x, y, width, height, speedX, speedY, duration, color){
+		super(Objects.Phase, x, y, width, height, speedX, speedY, color);
+		this.duration = duration;
+		this.avatar = "../IMGS/Collectables/Phase.png";
+	}
+
+	collect(){
+		player.immune = true;
+
+		var flash = setInterval(function(){
+			player.avatar = null;
+
+			setTimeout(() => {
+				player.avatar = localStorage.getItem("avatar");
+			}, 100);
+		}, 250);
+
+		setTimeout(() => {
+			clearInterval(flash);
+			player.immune = false;
+		}, this.duration);
 	}
 }
 
@@ -243,6 +271,7 @@ class Player extends LivingObject{
 	constructor(x, y, width, height, speedX, speedY, maxHealth, damage, color){ 
 		super(Objects.Player, x, y, width, height, speedX, speedY, maxHealth, damage, color);
 		this.powerUps = [];
+		this.immune = false;
 		this.avatar = localStorage.getItem("avatar");
 	}
 
@@ -269,6 +298,10 @@ class Player extends LivingObject{
 
 	// Determines if a specific object is within the rectangular bounds of this object.
 	isOverlapping(obj){
+		if (this.immune == true && !(obj.constructor.prototype instanceof Collectable)){
+			return false;
+		}
+
 		let left = this.x;
 		let right = this.x + this.width;
 		let top = this.y;
@@ -307,6 +340,7 @@ class Enemy extends LivingObject{
 class Missile extends Enemy{
 	constructor(x, y, width, height, speedX, speedY, maxHealth, damage, color){
 		super(Objects.Missile, x, y, width, height, speedX, speedY, maxHealth, damage, color);
+		this.avatar = "../IMGS/Characters/Enemies/Missile.png";
 	}
 
 	// WORK IN PROGRESS

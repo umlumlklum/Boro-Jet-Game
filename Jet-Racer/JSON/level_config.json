@@ -12,6 +12,12 @@
             "endTime": 25.0
          },
          {
+            "objectID": "Phase",
+            "spawnRate": 0.05,
+            "startTime": 2.5,
+            "endTime": 27.5
+         },
+         {
             "objectID": "MovingSquare",
             "spawnRate": 0.15,
             "startTime": 0.0,
