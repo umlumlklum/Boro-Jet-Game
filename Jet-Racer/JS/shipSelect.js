@@ -23,7 +23,7 @@ function index(name){
 }
 
 back.addEventListener("click", function(){
-	let targetLocation = location.href.replace("HTML/ship_select.html","index.html");
+	let targetLocation = location.href.replace("HTML/shipSelect.html","index.html");
 	localStorage.setItem('shipFile',file);
 	location.href=targetLocation;
 });
