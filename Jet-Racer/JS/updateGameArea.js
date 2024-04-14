@@ -1,4 +1,11 @@
+// Local variables
 this.startTime = new Date().getTime();
+let intitalSpawn = 2
+let startSpawn = intitalSpawn;
+let endSpawn = [10];
+// change to this after finishing json file
+// let endSpawn = [10,20,30];
+
 
 function everyInterval(n){
     return (gameArea.frameNumber / n) % 1 == 0;
@@ -11,15 +18,44 @@ function findSpawnableObjects(levelObjects){
     // Checks each potential object for the current level.
     levelObjects.forEach((object) => {
         // Passes if current time is within the time frame of the object.
-        if (time >= object.startTime && time <= object.endTime){
+        // if (time >= object.startTime && time <= object.endTime){ // old code
+        if (time >= startSpawn && time < endSpawn[level-1] || level-1 == endSpawn.length){
             // Passes if spawn rate condition is met.
             if (object.spawnRate >= Math.random()){
                 spawnables.add(object.objectID);
             }
         }
+        else if(time >= endSpawn[level-1] && level-1 != endSpawn.length){
+            console.log(time);
+            startSpawn = intitalSpawn + endSpawn[level-1];
+            level += 1;
+            // setTimeout(() => {loadNextLevel(level)}, (startSpawn)*1000); // optional transistion
+            loadNextLevel(level-1);
+        }        
     });
 
     return spawnables;
+}
+
+function loadNextLevel(lvl){
+    var compBackgroundImage = window.getComputedStyle(background);
+    var backgroundImageUrl = compBackgroundImage.backgroundImage.replace(/^url\(['"]?([^'"]*)['"]?\)$/, '$1');
+    const hasZoneFiles = localStorage.getItem('zoneFiles') !== null;
+    if (hasZoneFiles){
+        let zoneFiles = JSON.parse(localStorage.getItem('zoneFiles'));
+        let nextLevel = zoneFiles[1][lvl];
+        console.log(nextLevel);
+        let parts = backgroundImageUrl .split('/');
+        let currentLevel = parts[parts.length-1];
+        if(nextLevel !== currentLevel){
+            backgroundImageUrl = backgroundImageUrl.replace(currentLevel,nextLevel);
+            console.log(backgroundImageUrl)
+            background.style.backgroundImage = 'url('+backgroundImageUrl+')';
+        }
+    }
+    else{
+        alert("error: couldn't load next level");
+    }
 }
 
 function spawnObjects(spawnables){
