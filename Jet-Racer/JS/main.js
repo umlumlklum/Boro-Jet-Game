@@ -3,7 +3,7 @@ function loadLevel(){
     var backgroundImageUrl = compBackgroundImage.backgroundImage.replace(/^url\(['"]?([^'"]*)['"]?\)$/, '$1');
     const hasZoneFiles = localStorage.getItem('zoneFiles') !== null;
     if (hasZoneFiles){
-        const zoneFiles = JSON.parse(localStorage.getItem('zoneFiles'));
+        let zoneFiles = JSON.parse(localStorage.getItem('zoneFiles'));
         let currentZone = zoneFiles[0]+ "/" + zoneFiles[1][0];
         let parts = backgroundImageUrl .split('/');
         let startingZone = parts[parts.length-2]+ "/" + parts[parts.length-1];
