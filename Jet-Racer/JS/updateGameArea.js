@@ -1,10 +1,10 @@
 // Local variables
 this.startTime = new Date().getTime();
-let intitalSpawn = 2
+let intitalSpawn = 2;
 let startSpawn = intitalSpawn;
-let endSpawn = [10];
+//let endSpawn = [10];
 // change to this after finishing json file
-// let endSpawn = [10,20,30];
+let endSpawn = [10,20,30];
 
 
 function everyInterval(n){
@@ -129,7 +129,10 @@ function updateObjects(){
         object.speedX = -speed;
         object.move();
         object.clampToBounds();
-        object.render();
+
+        //setInterval(() => {
+            object.render();
+        //}, 0, 0);
     });
 
     return;
