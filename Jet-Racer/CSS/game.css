@@ -43,6 +43,20 @@ canvas{
     background-position: 0 0;
     animation: animatedBackground var(--background-speed, 20s) linear infinite;
 }
+
+#transition{
+    z-index: -1;
+    width: 3600px;
+    height: 100%;
+    margin-top: 52px;
+    padding: 0px; 
+    top: 0;
+    left: 0;
+    background-color: azure;
+    position: absolute;
+    background-size: cover;
+    background-position: 0 0;
+}
   
 @keyframes animatedBackground {
     0% {
