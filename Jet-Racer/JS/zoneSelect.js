@@ -4,7 +4,7 @@ const zone = document.getElementById("zone");
 const next = document.getElementById("next");
 const prev = document.getElementById("prev");
 let zones = new Map();
-zones.set("Zone_1",["airport.PNG", "city.jpeg","cloud.jpg","space.png"]);
+zones.set("Zone_1",["airport.PNG", "city.jpeg","cloud.jpg","space.jpg"]);
 zones.set("Zone_5",["Level_1_MoonBase35.png","Level_2_DuneZone.png","Level_3_Flooded_Forrest.png","Level_4_Lithomen_Domain.png"]);
 let parts = zone.src.split('/');
 let file = "";
