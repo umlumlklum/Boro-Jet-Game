@@ -8,12 +8,16 @@ let file = "";
 
 window.addEventListener('load',function(){
 	const hasShipFile = localStorage.getItem('shipFile') !== null;
-	if (hasShipFile){
+	if (hasShipFile == true){
 		const shipFile = localStorage.getItem('shipFile');
 		let parts = playerAvatar.src.split('/');
-		let currentShip= parts[parts.length-1];
-		if(currentShip !== shipFile)
+		// 
+		let currentShip = parts[parts.length-1];
+		file = currentShip; 
+		if(currentShip !== shipFile){
 			playerAvatar.src= playerAvatar.src.replace(currentShip,shipFile);
+			file = shipFile;
+		}
 		localStorage.removeItem('shipFile');
 	}
 });

@@ -7,25 +7,25 @@
       "objects": [
          {
             "objectID": "HealthPack",
-            "spawnRate": 0.025,
+            "spawnRate": 0.05,
             "startTime": 10.0,
             "endTime": 25.0
          },
          {
             "objectID": "Phase",
-            "spawnRate": 0.025,
+            "spawnRate": 0.05,
             "startTime": 2.5,
             "endTime": 27.5
          },
          {
             "objectID": "MovingSquare",
-            "spawnRate": 0.10,
+            "spawnRate": 0.15,
             "startTime": 0.0,
             "endTime": 30.0
          },
          {
             "objectID": "Missile",
-            "spawnRate": 0.15,
+            "spawnRate": 0.25,
             "startTime": 5.0,
             "endTime": 30.0
          }
@@ -39,25 +39,25 @@
       "objects": [
          {
             "objectID": "HealthPack",
-            "spawnRate": 0.03,
+            "spawnRate": 0.05,
             "startTime": 10.0,
             "endTime": 25.0
          },
          {
             "objectID": "Phase",
-            "spawnRate": 0.03,
+            "spawnRate": 0.05,
             "startTime": 2.5,
             "endTime": 27.5
          },
          {
             "objectID": "MovingSquare",
-            "spawnRate": 0.125,
+            "spawnRate": 0.15,
             "startTime": 0.0,
             "endTime": 30.0
          },
          {
             "objectID": "Missile",
-            "spawnRate": 0.175,
+            "spawnRate": 0.25,
             "startTime": 5.0,
             "endTime": 30.0
          }
@@ -71,13 +71,13 @@
       "objects": [
          {
             "objectID": "HealthPack",
-            "spawnRate": 0.045,
+            "spawnRate": 0.05,
             "startTime": 10.0,
             "endTime": 25.0
          },
          {
             "objectID": "Phase",
-            "spawnRate": 0.045,
+            "spawnRate": 0.05,
             "startTime": 2.5,
             "endTime": 27.5
          },
@@ -89,7 +89,7 @@
          },
          {
             "objectID": "Missile",
-            "spawnRate": 0.2,
+            "spawnRate": 0.25,
             "startTime": 5.0,
             "endTime": 30.0
          }
@@ -103,25 +103,25 @@
       "objects": [
          {
             "objectID": "HealthPack",
-            "spawnRate": 0.045,
+            "spawnRate": 0.05,
             "startTime": 10.0,
             "endTime": 25.0
          },
          {
             "objectID": "Phase",
-            "spawnRate": 0.045,
+            "spawnRate": 0.05,
             "startTime": 2.5,
             "endTime": 27.5
          },
          {
             "objectID": "MovingSquare",
-            "spawnRate": 0.25,
+            "spawnRate": 0.15,
             "startTime": 0.0,
             "endTime": 30.0
          },
          {
             "objectID": "Missile",
-            "spawnRate": 0.35,
+            "spawnRate": 0.25,
             "startTime": 5.0,
             "endTime": 30.0
          }
