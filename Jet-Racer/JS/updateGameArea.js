@@ -93,6 +93,12 @@ function spawnObjects(spawnables){
 // Broadcasts updates to collision, movement, and rendering to each object.
 function updateObjects(){
     objects.forEach((object) => {
+        if (object.x < (0 - object.width)){
+            objects.delete(object);
+        }
+    });
+
+    objects.forEach((object) => {
         if (player.isOverlapping(object)){
             switch (object.type){
                 case Objects.Column:
