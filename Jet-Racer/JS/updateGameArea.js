@@ -162,7 +162,7 @@ function updateGameArea(){
     speed = config.baseSpeed;
 
     // Attempts to spawn objects every interval.
-    if (gameArea.frameNumber % (frameRate / config.spawnFrequency) == 0){
+    if (gameArea.frameNumber % (frameRate / config.spawnFrequency) == 0.0){
         spawnObjects(findSpawnableObjects(config.objects));
     }
 

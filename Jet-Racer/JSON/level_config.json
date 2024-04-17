@@ -35,7 +35,7 @@
       "levelID": 2,
       "baseSpeed": 2.5,
       "timeLimit": 30.0,
-      "spawnFrequency": 6.0,
+      "spawnFrequency": 5.0,
       "objects": [
          {
             "objectID": "HealthPack",
@@ -67,7 +67,7 @@
       "levelID": 3,
       "baseSpeed": 2.5,
       "timeLimit": 30.0,
-      "spawnFrequency": 7.0,
+      "spawnFrequency": 5.0,
       "objects": [
          {
             "objectID": "HealthPack",
@@ -99,7 +99,7 @@
       "levelID": 4,
       "baseSpeed": 2.5,
       "timeLimit": 30.0,
-      "spawnFrequency": 8.0,
+      "spawnFrequency": 5.0,
       "objects": [
          {
             "objectID": "HealthPack",
