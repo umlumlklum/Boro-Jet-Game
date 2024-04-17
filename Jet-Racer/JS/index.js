@@ -8,7 +8,7 @@ function sleep(ms){
 
 startEndlessBtn.addEventListener("click", function(){
     localStorage.setItem("avatar",playerAvatar.src);
-    document.getElementsByTagName("img")[0].style.animationName = "JetTakeOffAnimation";
+    document.getElementsByTagName("img")[1].style.animationName = "JetTakeOffAnimation";
     document.getElementsByTagName("img")[0].style.animationDuration = "2s";
     sleep(1090).then(()=>{location.href = "./HTML/game.html";});
 });
