@@ -180,6 +180,5 @@ function updateGameArea(){
     player.move();
     player.clampToBounds();
     player.render();
-
-    document.getElementById("statBox").textContent = "Level: " + level.toFixed(0) + " | Distance: " + distance.toFixed(0) + " | Time: " + time + " | Speed: " + speed.toFixed(2) + " | Health: " + player.health.toFixed(0) + " | Power Ups: " + player.powerUps.length.toFixed(0);
+    document.getElementById("statBox").textContent = "Level: " + level.toFixed(0) + " | Distance: " + distance.toFixed(0) + " | Time: " + time + " | Health: " + player.health.toFixed(0);
 }
