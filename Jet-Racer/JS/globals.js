@@ -16,5 +16,5 @@ var statBoxHeight = document.querySelector("#statBox").clientHeight;
 
 const canvasWidth = window.innerWidth;
 const canvasHeight = window.innerHeight;
-const playerWidth = 50;
-const playerHeight = 50;
+const playerWidth = 70;
+const playerHeight = 70;
