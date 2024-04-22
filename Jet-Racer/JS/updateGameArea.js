@@ -2,8 +2,6 @@
 this.startTime = new Date().getTime();
 let intitalSpawn = 2;
 let startSpawn = intitalSpawn;
-//let endSpawn = [10];
-// change to this after finishing json file
 let endSpawn = [10,20,30];
 
 
@@ -51,6 +49,21 @@ function loadNextLevel(lvl){
             backgroundImageUrl = backgroundImageUrl.replace(currentLevel,nextLevel);
             console.log(backgroundImageUrl)
             background.style.backgroundImage = 'url('+backgroundImageUrl+')';
+            // Get the stylesheets
+            var stylesheets = document.styleSheets;
+            // Loop through each stylesheet
+            for (var i = 0; i < stylesheets.length; i++) {
+                var rules = stylesheets[i].cssRules || stylesheets[i].rules;
+
+                // Loop through each rule in the stylesheet
+                for (var j = 0; j < rules.length; j++) {
+                    // Check if the rule is for #background::after
+                    if (rules[j].selectorText === "#background::after") {
+                        // Change the background image URL of ::after
+                        rules[j].style.backgroundImage = 'url('+backgroundImageUrl+')';
+                    }
+                }
+            }
         }
     }
     else{
