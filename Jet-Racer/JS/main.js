@@ -11,6 +11,20 @@ function loadLevel(){
             backgroundImageUrl = backgroundImageUrl.replace(startingZone,currentZone);
             console.log(backgroundImageUrl)
             background.style.backgroundImage = 'url('+backgroundImageUrl+')';
+            var stylesheets = document.styleSheets;
+            // Loop through each stylesheet
+            for (var i = 0; i < stylesheets.length; i++) {
+                var rules = stylesheets[i].cssRules || stylesheets[i].rules;
+
+                // Loop through each rule in the stylesheet
+                for (var j = 0; j < rules.length; j++) {
+                    // Check if the rule is for #background::after
+                    if (rules[j].selectorText === "#background::after") {
+                        // Change the background image URL of ::after
+                        rules[j].style.backgroundImage = 'url('+backgroundImageUrl+')';
+                    }
+                }
+            }
         }
     }
 }
