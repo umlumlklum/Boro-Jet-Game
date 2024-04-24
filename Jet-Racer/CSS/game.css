@@ -30,7 +30,7 @@ canvas{
 
 #container{
     /* position: relative; */
-    padding: 0px 52px 0px 0px;
+    padding: 52px 0px 0px 0px;
     width: 200%;
     height: 100vh;
 }
