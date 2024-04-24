@@ -34,10 +34,10 @@ const hasZoneFiles = localStorage.getItem('zoneFiles') !== null;
 if (!hasZoneFiles){
     let zones = new Map();
     zones.set("Zone_1",["airport.PNG", "city.jpeg","cloud.jpg","space.jpg"]);
-    zones.set("Zone_2",["Planet2.jpg","Planets.jpg","Planets_2.png","Shooting Star.jpg"]);
-    zones.set("Zone_3",["Astronaut-Moon.png","Pluto.png","Rocket-Planets.png","Space-Planets.png"]);
-    zones.set("Zone_4",["Orbs.png","Saturn.png","UFO_Orb.png","Venus.png"]);
-    zones.set("Zone_5",["Level_1_MoonBase35.png","Level_2_DuneZone.png","Level_3_Flooded_Forrest.png","Level_4_Lithomen_Domain.png"]);
+    // zones.set("Zone_2",["Planet2.jpg","Planets.jpg","Planets_2.png","Shooting Star.jpg"]);
+    // zones.set("Zone_3",["Astronaut-Moon.png","Pluto.png","Rocket-Planets.png","Space-Planets.png"]);
+    // zones.set("Zone_4",["Orbs.png","Saturn.png","UFO_Orb.png","Venus.png"]);
+    // zones.set("Zone_5",["Level_1_MoonBase35.png","Level_2_DuneZone.png","Level_3_Flooded_Forrest.png","Level_4_Lithomen_Domain.png"]);
     let zoneEntries = Array.from(zones.entries());
 	// set defualt zone
     const selectedZone = zoneEntries[0];
