@@ -29,10 +29,7 @@ window.addEventListener('load',function(){	const hasZoneFiles = localStorage.get
 	}
 	zone.style.display = 'block';
 });
-	// split into zoneIndex and levelIndex maybe?
-	// function index(name){
-	// 	return characters.indexOf(name);
-	// }
+
 function getKeyIndex(mp, key) {
 	let index = 0;
 	for (let mapKey of mp.keys()) {
