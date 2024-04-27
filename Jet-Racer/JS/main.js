@@ -31,13 +31,36 @@ function loadLevel(){
 
 function startGame(){
     loadLevel();
-    fetch('../JSON/level_config.json')
-        .then(response => response.json())
-        .then(data => levelConfig = data)
-        .then(() => {
-            gameArea = new GameArea();
-            player = new Player(30, 30, playerWidth, playerHeight, 0, 0, 3, 1, "white"); // player class
-            gameArea.start();
-        })
-        .catch(error => console.error('Error fetching JSON:', error));             
+
+    levelConfig[0] = [
+        new ObjectConfig("HealthPack", 0.05),
+        new ObjectConfig("Phase", 0.05),
+        new ObjectConfig("MovingSquare", 0.05),
+        new ObjectConfig("Missile", 0.15)
+    ]
+
+    levelConfig[1] = [
+        new ObjectConfig("HealthPack", 0.04),
+        new ObjectConfig("Phase", 0.03),
+        new ObjectConfig("MovingSquare", 0.10),
+        new ObjectConfig("Missile", 0.20)
+    ]
+
+    levelConfig[2] = [
+        new ObjectConfig("HealthPack", 0.03),
+        new ObjectConfig("Phase", 0.02),
+        new ObjectConfig("MovingSquare", 0.15),
+        new ObjectConfig("Missile", 0.25)
+    ]
+
+    levelConfig[3] = [
+        new ObjectConfig("HealthPack", 0.02),
+        new ObjectConfig("Phase", 0.01),
+        new ObjectConfig("MovingSquare", 0.17),
+        new ObjectConfig("Missile", 0.27)
+    ]
+
+    gameArea = new GameArea();
+    player = new Player(30, 30, playerWidth, playerHeight, 0, 0, 3, 1, "white"); // player class
+    gameArea.start();           
 }

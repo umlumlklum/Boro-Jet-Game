@@ -4,35 +4,8 @@ let intitalSpawn = 2;
 let startSpawn = intitalSpawn;
 let endSpawn = [10,20,30];
 
-
 function everyInterval(n){
     return (gameArea.frameNumber / n) % 1 == 0;
-}
-
-// With a given level config, finds every object that can be currently spawned.
-function findSpawnableObjects(levelObjects){
-    spawnables = new Set();
-
-    // Checks each potential object for the current level.
-    levelObjects.forEach((object) => {
-        // Passes if current time is within the time frame of the object.
-        // if (time >= object.startTime && time <= object.endTime){ // old code
-        if (time >= startSpawn && time < endSpawn[level-1] || level-1 == endSpawn.length){
-            // Passes if spawn rate condition is met.
-            if (object.spawnRate >= Math.random()){
-                spawnables.add(object.objectID);
-            }
-        }
-        else if(time >= endSpawn[level-1] && level-1 != endSpawn.length){
-            console.log(time);
-            startSpawn = intitalSpawn + endSpawn[level-1];
-            level += 1;
-            // setTimeout(() => {loadNextLevel(level)}, (startSpawn)*1000); // optional transistion
-            loadNextLevel(level-1);
-        }        
-    });
-
-    return spawnables;
 }
 
 function loadNextLevel(lvl){
@@ -69,6 +42,31 @@ function loadNextLevel(lvl){
     else{
         alert("error: couldn't load next level");
     }
+}
+
+// With a given level config, finds every object that can be currently spawned.
+function findSpawnableObjects(levelObjects){
+    spawnables = new Set();
+
+    // Checks each potential object for the current level.
+    levelObjects.forEach((object) => {
+        // Passes if current time is within the time frame of the object.
+        // if (time >= object.startTime && time <= object.endTime){ // old code
+        if (time >= startSpawn && time < endSpawn[level-1] || level-1 == endSpawn.length){
+            // Passes if spawn rate condition is met.
+            if (object.spawnRate >= Math.random()){
+                spawnables.add(object.objectID);
+            }
+        } else if(time >= endSpawn[level-1] && level-1 != endSpawn.length){
+            console.log(time);
+            startSpawn = intitalSpawn + endSpawn[level-1];
+            level += 1;
+            // setTimeout(() => {loadNextLevel(level)}, (startSpawn)*1000); // optional transistion
+            loadNextLevel(level-1);
+        }        
+    });
+
+    return spawnables;
 }
 
 function spawnObjects(spawnables){
@@ -160,12 +158,7 @@ function updateObjects(){
 // Updates the game, is called every once per interval from the gameArea.
 function updateGameArea(){
     // Fetches the level config.
-    let config;
-    for (let i = 0; i < levelConfig.length; i++){
-        if (levelConfig[i].levelID == level){
-            config = levelConfig[i];
-        }
-    }
+    let config = levelConfig[level-1];
 
     // Clears the frame to redraw the scene.
     gameArea.clear();
@@ -177,12 +170,9 @@ function updateGameArea(){
     // Updates time spent in the level.
     time = ((new Date().getTime() - startTime) / 1000).toFixed(2);  // Convert milliseconds to seconds
 
-    // Sets game speed based on current level config.
-    speed = config.baseSpeed;
-
     // Attempts to spawn objects every interval.
-    if (gameArea.frameNumber % (frameRate / config.spawnFrequency) == 0.0){
-        spawnObjects(findSpawnableObjects(config.objects));
+    if (gameArea.frameNumber % (frameRate / 5.0) == 0.0){
+        spawnObjects(findSpawnableObjects(config));
     }
 
     // Updates all objects once per interval.

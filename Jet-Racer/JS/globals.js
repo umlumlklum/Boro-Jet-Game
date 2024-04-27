@@ -3,11 +3,11 @@ var player;
 var objects = new Set();
 
 var time = 0;
-var speed = 0;
+var speed = 2.5;
 var distance = 0;
 var level = 1;
 
-var levelConfig;
+var levelConfig = [];
 var frameRate = 200;
 
 var stats;
