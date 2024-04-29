@@ -34,21 +34,21 @@ function startGame(){
 
     levelConfig[0] = [
         new ObjectConfig("HealthPack", 0.05),
-        new ObjectConfig("Phase", 0.05),
+        new ObjectConfig("Phase", 0.02),
         new ObjectConfig("MovingSquare", 0.05),
         new ObjectConfig("Missile", 0.15)
     ]
 
     levelConfig[1] = [
         new ObjectConfig("HealthPack", 0.04),
-        new ObjectConfig("Phase", 0.03),
+        new ObjectConfig("Phase", 0.02),
         new ObjectConfig("MovingSquare", 0.10),
         new ObjectConfig("Missile", 0.20)
     ]
 
     levelConfig[2] = [
         new ObjectConfig("HealthPack", 0.03),
-        new ObjectConfig("Phase", 0.02),
+        new ObjectConfig("Phase", 0.01),
         new ObjectConfig("MovingSquare", 0.15),
         new ObjectConfig("Missile", 0.25)
     ]
