@@ -350,7 +350,7 @@ class Player extends LivingObject{
     usePower(){
         let power = this.powers.get(this.activePower);
 
-        if (power != null){
+        if (power != null && !player.immune){
             power.use();
             this.powers.set(this.activePower, null);
             this.cyclePowers();
