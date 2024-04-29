@@ -79,7 +79,7 @@ function spawnObjects(spawnables){
                 // Needs implemented.
                 break;
             case Objects.MovingSquare:
-                objects.add(new MovingSquare(x, /*Math.random()*canvasHeight*/(canvasHeight/2)-(Math.random()*300), 120, 120, 0, speed/100+2, 1, "black"));
+                objects.add(new MovingSquare(x, (canvasHeight/2)-(Math.random()*300), 120, 120, 0, speed/100+2, 1, "black"));
                 break;
             case Objects.HealthPack:
                 objects.add(new HealthPack(x, Math.random()*canvasHeight, 60, 60, 0, 0, 1, "green"));
@@ -106,50 +106,22 @@ function updateObjects(){
     objects.forEach((object) => {
         if (object.x < (0 - object.width)){
             objects.delete(object);
-        }
-    });
-
-    objects.forEach((object) => {
-        if (player.isOverlapping(object)){
-            switch (object.type){
-                case Objects.Column:
-                    object.collideWith(player);
+        } else {
+            if (player.isOverlapping(object)){
+                if (object.interactionEvent(player)){
                     objects.delete(object);
-                    return;
-                case Objects.MovingSquare:
-                    object.collideWith(player);
-                    objects.delete(object);
-                    return;
-                case Objects.HealthPack:
-                    object.collect();
-                    objects.delete(object);
-                    break;
-                case Objects.Slow:
-                    object.collect();
-                    objects.delete(object);
-                    break;
-                case Objects.Phase:
-                    object.collect();
-                    objects.delete(object);
-                    break;
-                case Objects.Missile:
-                    object.interactWith(player);
-                    objects.delete(object);
-                    break;
+                }
             }
-        }
 
-        if (object.type == Objects.Missile){
-            object.target(player);
-        }
-
-        object.speedX = -speed;
-        object.move();
-        object.clampToBounds();
-
-        //setInterval(() => {
+            if (object.type == Objects.Missile){
+                object.target(player);
+            }
+    
+            object.speedX = -speed;
+            object.move();
+            object.clampToBounds();
             object.render();
-        //}, 0, 0);
+        }
     });
 
     return;
@@ -183,5 +155,20 @@ function updateGameArea(){
     player.move();
     player.clampToBounds();
     player.render();
+
+    player.powers.forEach((power, index) => {
+        let powerImage = new Image();
+        powerImage.src = power == null ? "../IMGS/Collectables/PhaseLocked.png" : "../IMGS/Collectables/Phase.png";
+
+        let ctx = gameArea.context;
+        ctx.drawImage(powerImage, (canvasWidth/2) + (50*index) - (50*1.5), statBoxHeight+10, 50, 50);
+
+        if (index == player.activePower){
+            let caretImage = new Image();
+            caretImage.src = "../IMGS/Collectables/Caret.png";
+            ctx.drawImage(caretImage, (canvasWidth/2) + (50*index) - (63), statBoxHeight+60, 25, 25);
+        }
+    });
+
     document.getElementById("statBox").textContent = "Level: " + level.toFixed(0) + " | Distance: " + distance.toFixed(0) + " | Time: " + time + " | Health: " + player.health.toFixed(0);
 }

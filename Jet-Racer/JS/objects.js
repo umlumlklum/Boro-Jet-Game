@@ -68,6 +68,8 @@ class Object{
 			ctx.fillRect(this.x, this.y, this.width, this.height);
 		}
 	}
+
+    interactionEvent(interactor){}
 }
 
 class StatBox extends Object{
@@ -115,8 +117,9 @@ class Obstacle extends MovableObject{
 	}
 	
 	// Called when the player overlaps with this object.
-	collideWith(obj){
-		obj.takeDamage(this.damage);
+	interactionEvent(interactor){
+		interactor.takeDamage(this.damage);
+        return true;
 	}
 }
 
@@ -167,9 +170,6 @@ class Collectable extends MovableObject{
 	constructor(type, x, y, width, height, speedX, speedY, color){
 		super(type, x, y, width, height, speedX, speedY, color);
 	}
-
-	// Base function to be overriden in child classes.
-	collect(){}
 }
 
 // Health pack collectable.
@@ -181,8 +181,9 @@ class HealthPack extends Collectable{
 	}
 
 	// Upon being collected, heals the player a specified amount.
-	collect(){
-		player.heal(this.healValue);
+	interactionEvent(interactor){
+		interactor.heal(this.healValue);
+        return true;
 	}
 }
 
@@ -210,8 +211,12 @@ class Phase extends Collectable{
 		this.avatar = "../IMGS/Collectables/Phase.png";
 	}
 
-	collect(){
-		player.immune = true;
+	interactionEvent(interactor){
+		return interactor.addPower(this);
+	}
+
+    use(){
+        player.immune = true;
 
 		var flash = setInterval(function(){
 			player.avatar = null;
@@ -225,7 +230,7 @@ class Phase extends Collectable{
 			clearInterval(flash);
 			player.immune = false;
 		}, this.duration);
-	}
+    }
 }
 
 // Base class for all living objects. 
@@ -270,9 +275,15 @@ class LivingObject extends MovableObject{
 class Player extends LivingObject{
 	constructor(x, y, width, height, speedX, speedY, maxHealth, damage, color){ 
 		super(Objects.Player, x, y, width, height, speedX, speedY, maxHealth, damage, color);
-		this.powerUps = [];
 		this.immune = false;
 		this.avatar = localStorage.getItem("avatar");
+
+        this.powers = new Map();
+        this.powers.set(0, null);
+        this.powers.set(1, null);
+        this.powers.set(2, null);
+
+        this.activePower = 1;
 	}
 
 	// Handles player input.
@@ -321,6 +332,50 @@ class Player extends LivingObject{
 
 		return overlap;
 	}
+
+    addPower(power){
+        let searching = true;
+
+        this.powers.forEach((pow, index) => {
+            if (pow == null && searching){
+                this.powers.set(index, power);
+                this.activePower = index;
+                searching = false;
+            }
+        });
+
+        return !searching;
+    }
+
+    usePower(){
+        let power = this.powers.get(this.activePower);
+
+        if (power != null){
+            power.use();
+            this.powers.set(this.activePower, null);
+            this.cyclePowers();
+        }
+    }
+
+    cyclePowers(){
+        let empty = true;
+
+        this.powers.forEach((power, index) => {
+            if (power != null){
+                empty = false;
+            }
+        });
+
+        if (!empty){
+            let index = (this.activePower + 1) % 3;
+
+            while (this.powers.get(index) == null){
+                index = (index + 1) % 3;
+            }
+
+            this.activePower = index;
+        }
+    }
 }
 
 // Base class for all enemies. 
@@ -330,9 +385,6 @@ class Enemy extends LivingObject{
 	constructor(type, x, y, width, height, speedX, speedY, maxHealth, damage, color){
 		super(type, x, y, width, height, speedX, speedY, maxHealth, damage, color);
 	}
-
-	// Base interaction function for enemies to interact with objects.
-	interactWith(obj){}
 }
 
 // Missile class.
@@ -348,19 +400,19 @@ class Missile extends Enemy{
 		let dist = this.x - player.x;
 		
 		if (dist >= 1000){
-			this.speedX = -2;
+			this.speedX = -1.5;
 		} else {
-			this.speedX = -4;
+			this.speedX = -5;
 		}
 
 		super.move();
 	}
 
 	// Loosely follows the target objects' y position.
-	target(obj){
-		if (obj.y > this.y){
+	target(){
+		if (player.y > this.y){
 			this.speedY += 0.01;
-		} else if (obj.y < this.y){
+		} else if (player.y < this.y){
 			this.speedY -= 0.01;
 		}
 
@@ -372,7 +424,8 @@ class Missile extends Enemy{
 	}
 
 	// Called during collision with the player.
-	interactWith(obj){
-		obj.takeDamage(this.damage);
+	interactionEvent(interactor){
+		interactor.takeDamage(this.damage);
+        return true;
 	}
 }
