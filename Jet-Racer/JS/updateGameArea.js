@@ -8,38 +8,46 @@ function everyInterval(n){
     return (gameArea.frameNumber / n) % 1 == 0;
 }
 
-function loadNextLevel(lvl){
+// Create a style element for the pseudo-element
+var pseudoStyle = document.createElement('style');
+document.head.appendChild(pseudoStyle);
+
+function updatePseudoElementStyle(imageUrl) {
+    pseudoStyle.innerHTML = `
+        #background::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: -100%; /* This will place the copy of the background image on the right side */
+            width: 100%;
+            height: 100%;
+            background-image: url('${imageUrl}');
+            background-repeat: repeat-x; 
+            background-size: cover; 
+            background-position: center, center;
+        }
+    `;
+}
+
+function loadNextLevel(lvl) {
+    var background = document.getElementById('background');
     var compBackgroundImage = window.getComputedStyle(background);
     var backgroundImageUrl = compBackgroundImage.backgroundImage.replace(/^url\(['"]?([^'"]*)['"]?\)$/, '$1');
     const hasZoneFiles = localStorage.getItem('zoneFiles') !== null;
-    if (hasZoneFiles){
+    if (hasZoneFiles) {
         let zoneFiles = JSON.parse(localStorage.getItem('zoneFiles'));
         let nextLevel = zoneFiles[1][lvl];
-        console.log(nextLevel);
-        let parts = backgroundImageUrl .split('/');
-        let currentLevel = parts[parts.length-1];
-        if(nextLevel !== currentLevel){
-            backgroundImageUrl = backgroundImageUrl.replace(currentLevel,nextLevel);
-            console.log(backgroundImageUrl)
-            background.style.backgroundImage = 'url('+backgroundImageUrl+')';
-            // Get the stylesheets
-            var stylesheets = document.styleSheets;
-            // Loop through each stylesheet
-            for (var i = 0; i < stylesheets.length; i++) {
-                var rules = stylesheets[i].cssRules || stylesheets[i].rules;
-
-                // Loop through each rule in the stylesheet
-                for (var j = 0; j < rules.length; j++) {
-                    // Check if the rule is for #background::after
-                    if (rules[j].selectorText === "#background::after") {
-                        // Change the background image URL of ::after
-                        rules[j].style.backgroundImage = 'url('+backgroundImageUrl+')';
-                    }
-                }
-            }
+        // console.log(nextLevel);
+        let parts = backgroundImageUrl.split('/');
+        let currentLevel = parts[parts.length - 1];
+        if (nextLevel !== currentLevel) {
+            backgroundImageUrl = backgroundImageUrl.replace(currentLevel, nextLevel);
+            // console.log(backgroundImageUrl);
+            background.style.backgroundImage = 'url(' + backgroundImageUrl + ')';
+            // Update the pseudo-element style
+            updatePseudoElementStyle(backgroundImageUrl);
         }
-    }
-    else{
+    } else {
         alert("error: couldn't load next level");
     }
 }
@@ -58,7 +66,7 @@ function findSpawnableObjects(levelObjects){
                 spawnables.add(object.objectID);
             }
         } else if(time >= endSpawn[level-1] && level-1 != endSpawn.length){
-            console.log(time);
+            //console.log(time);
             startSpawn = intitalSpawn + endSpawn[level-1];
             level += 1;
             // setTimeout(() => {loadNextLevel(level)}, (startSpawn)*1000); // optional transistion
