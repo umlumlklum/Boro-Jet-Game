@@ -33,15 +33,15 @@ class PauseMenu{
             this.background.style.animationPlayState = 'running';
         });
         
-        window.addEventListener("click", function(e){
-            let newModal = document.getElementById("modal");
-            if(e.target == newModal){
-                newModal.style.display = "none";
-            }
-            this.background.style.animationPlayState = 'running';
-            gameArea.clear();
-            gameArea.start();
-        });
+        // window.addEventListener("click", function(e){
+        //     let newModal = document.getElementById("modal");
+        //     if(e.target == newModal){
+        //         newModal.style.display = "none";
+        //     }
+        //     this.background.style.animationPlayState = 'running';
+        //     gameArea.clear();
+        //     gameArea.start();
+        // });
     }
 
     #insertModal(){
